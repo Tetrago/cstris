@@ -64,11 +64,11 @@ namespace
 			board.set(1, 1, Tetrimino::S);
 			board.set(2, 1, Tetrimino::S);
 			board.set(1, 2, Tetrimino::S);
-			board.set(2, 2, Tetrimino::S);
+			board.set(0, 2, Tetrimino::S);
 
 			return board;
 		}()},
-		{ Tetrimino::T, []() -> Board
+		{ Tetrimino::Z, []() -> Board
 		{
 			Board board(3, 3);
 			board.set(0, 1, Tetrimino::Z);

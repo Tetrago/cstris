@@ -8,8 +8,6 @@ int main()
 	Board board;
 	Dropper dropper(&board);
 
-	dropper.piece(Tetrimino::J);
-
 	InitWindow(board.width() * 30, board.height() * 30, "Cstris");
 	SetTargetFPS(60);
 
@@ -26,7 +24,7 @@ int main()
 		if(IsKeyPressed(KEY_SPACE)) dropper.drop();
 
 		BeginDrawing();
-		ClearBackground(RAYWHITE);
+		ClearBackground({ 0, 0, 0, 255 });
 
 		board.draw(0, 0);
 		dropper.draw();

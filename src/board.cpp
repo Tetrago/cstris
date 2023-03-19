@@ -91,13 +91,20 @@ void Board::draw(int x, int y, bool ghost, int ppu) const noexcept
 
 bool Board::intersects(const Board& board, int x, int y) const noexcept
 {
-	for(int dx = std::max(0, x); dx < std::min(mWidth, x + board.width()); ++dx)
+	for(int dx = 0; dx < board.width(); ++dx)
 	{
-		for(int dy = std::max(0, y); dy < std::min(mHeight, y + board.height()); ++dy)
+		for(int dy = 0; dy < board.height(); ++dy)
 		{
-			if(mTetriminoes[dy * mWidth + dx] != Tetrimino::None
-				&& board.mTetriminoes[(dy - y) * mWidth + dx - x] != Tetrimino::None)
+			int bx = x + dx;
+			int by = y + dy;
+
+			if(bx < 0 || bx >= mWidth || by < 0 || by >= mHeight) continue;
+
+			if(mTetriminoes[by * mWidth + bx] != Tetrimino::None
+				&& board.mTetriminoes[dy * board.width() + dx] != Tetrimino::None)
+			{
 				return true;
+			}
 		}
 	}
 
@@ -106,14 +113,19 @@ bool Board::intersects(const Board& board, int x, int y) const noexcept
 
 void Board::overlay(const Board& board, int x, int y) noexcept
 {
-	for(int dx = std::max(0, x); dx < std::min(mWidth, x + board.width()); ++dx)
+	for(int dx = 0; dx < board.width(); ++dx)
 	{
-		for(int dy = std::max(0, y); dy < std::min(mHeight, y + board.height()); ++dy)
+		for(int dy = 0; dy < board.height(); ++dy)
 		{
-			Tetrimino piece = board.mTetriminoes[(dy - y) * mWidth + dx - x];
+			int bx = x + dx;
+			int by = y + dy;
+
+			if(bx < 0 || bx >= mWidth || by < 0 || by >= mHeight) continue;
+
+			Tetrimino piece = board.mTetriminoes[dy * board.width() + dx];
 			if(piece == Tetrimino::None) continue;
 
-			mTetriminoes[dy * mWidth + dx] = piece;
+			mTetriminoes[by * mWidth + bx] = piece;
 		}
 	}
 }
@@ -140,6 +152,8 @@ Vector4 Board::bounds() const noexcept
 
 void Board::drawTetrimino(int x, int y, int ppu, Tetrimino tetrimino, bool ghost) const noexcept
 {
+	if(tetrimino == Tetrimino::None) return;
+
 	Color color = get_tetrimino_color(tetrimino);
 	if(ghost)
 	{
