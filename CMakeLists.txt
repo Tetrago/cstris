@@ -15,4 +15,3 @@ add_executable(cstris
 target_compile_features(cstris PRIVATE cxx_std_17)
 
 target_link_libraries(cstris PRIVATE raylib)
-target_include_directories(cstris PRIVATE "src")
