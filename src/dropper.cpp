@@ -45,6 +45,7 @@ void Dropper::shift(int d) noexcept
 void Dropper::rotate() noexcept
 {
 	mPiece = mPiece.rotate(Rotation::Clockwise);
+	mBounds = mPiece.bounds();
 	clamp();
 }
 
