@@ -105,7 +105,7 @@ Rotation rotate_counterclockwiise(Rotation rotation) noexcept
 	}
 }
 
-Board get_tetrimino(Tetrimino tetrimino) noexcept
+const Board& get_tetrimino(Tetrimino tetrimino) noexcept
 {
 	return gTetriminos[tetrimino];
 }

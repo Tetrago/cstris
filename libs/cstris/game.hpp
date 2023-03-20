@@ -18,6 +18,7 @@ public:
 	void draw(int x, int y, int ppu = 30) const noexcept;
 
 	const Board& board() const noexcept { return mBoard; }
+	const Dropper& dropper() const noexcept { return mDropper; }
 private:
 	Board mBoard;
 	Dropper mDropper;

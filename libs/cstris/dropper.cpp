@@ -91,9 +91,9 @@ void Dropper::piece(Tetrimino tetrimino) noexcept
 
 Tetrimino Dropper::getTetriminoFromBag() noexcept
 {
-	if(mBag.empty())
+	if(mBag.size() < 7)
 	{
-		mBag = std::vector<Tetrimino>
+		std::vector<Tetrimino> bag
 		{
 			Tetrimino::I,
 			Tetrimino::O,
@@ -104,7 +104,8 @@ Tetrimino Dropper::getTetriminoFromBag() noexcept
 			Tetrimino::Z
 		};
 
-		std::shuffle(mBag.begin(), mBag.end(), std::default_random_engine());
+		std::shuffle(bag.begin(), bag.end(), std::default_random_engine());
+		mBag.insert(mBag.begin(), bag.begin(), bag.end());
 	}
 
 	Tetrimino tetrimino = mBag.back();

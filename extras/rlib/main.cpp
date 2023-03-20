@@ -2,6 +2,10 @@
 
 #include <game.hpp>
 
+constexpr Color BORDER_COLOR{ 129, 129, 129, 255 };
+constexpr int PIXELS_PER_UNIT = 30;
+constexpr int QUEUE_LENGTH = 4;
+
 Color get_tetrimino_color(Tetrimino tetrimino) noexcept
 {
 	switch(tetrimino)
@@ -29,6 +33,14 @@ void cstris_draw_block(int x, int y, int size, Tetrimino tetrimino, bool ghost)
 	DrawRectangle(x, y, size, size, color);
 }
 
+void draw_centered(Tetrimino tetrimino, int x, int y)
+{
+	const Board& board = get_tetrimino(tetrimino);
+
+	float offset = (4 - board.width()) * 0.5f;
+	board.draw(x + offset * PIXELS_PER_UNIT, y + offset * PIXELS_PER_UNIT, PIXELS_PER_UNIT);
+}
+
 int gFrameCount = 0;
 int gLastKey = -1;
 int gInputOffset;
@@ -41,6 +53,7 @@ bool is_key_down(int key) noexcept
 
 		gLastKey = key;
 		gInputOffset = gFrameCount % 3;
+
 		return true;
 	}
 	else
@@ -59,7 +72,7 @@ int main()
 {
 	Game game;
 
-	InitWindow(game.board().width() * 30, game.board().height() * 30, "Cstris");
+	InitWindow(game.board().width() * PIXELS_PER_UNIT + 4 * 2 * PIXELS_PER_UNIT, game.board().height() * PIXELS_PER_UNIT, "Cstris");
 	SetTargetFPS(60);
 
 	while(!WindowShouldClose())
@@ -78,8 +91,21 @@ int main()
 		if(IsKeyPressed(KEY_SPACE)) game.drop();
 
 		BeginDrawing();
+
 		ClearBackground({ 0, 0, 0, 255 });
-		game.draw(0, 0);
+
+		DrawRectangleLines(0, 0, 4 * PIXELS_PER_UNIT, 4 * PIXELS_PER_UNIT, BORDER_COLOR);
+		draw_centered(game.dropper().held(), 0, 0);
+
+		DrawRectangleLines((4 + game.board().width()) * PIXELS_PER_UNIT, 0, 4 * PIXELS_PER_UNIT, 4 * QUEUE_LENGTH * PIXELS_PER_UNIT, BORDER_COLOR);
+		for(int i = 0; i < QUEUE_LENGTH; ++i)
+		{
+			draw_centered(game.dropper().bag()[game.dropper().bag().size() - i - 1], (4 + game.board().width()) * PIXELS_PER_UNIT, i * 4 * PIXELS_PER_UNIT);
+		}
+
+		DrawRectangleLines(4 * PIXELS_PER_UNIT, 0, game.board().width() * PIXELS_PER_UNIT, game.board().height() * PIXELS_PER_UNIT, BORDER_COLOR);
+		game.draw(4 * PIXELS_PER_UNIT, 0);
+
 		EndDrawing();
 	}
 

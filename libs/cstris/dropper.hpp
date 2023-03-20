@@ -17,8 +17,8 @@ public:
 	void rotate() noexcept;
 	void swap() noexcept;
 
-	auto begin() const noexcept { return mBag.rbegin(); }
-	auto end() const noexcept { return mBag.rend(); }
+	Tetrimino held() const noexcept { return mHeld; }
+	const std::vector<Tetrimino> bag() const noexcept { return mBag; }
 private:
 	void update() noexcept;
 	void next() noexcept;
