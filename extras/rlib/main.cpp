@@ -74,6 +74,7 @@ int main()
 		if(is_key_down(KEY_RIGHT)) game.right();
 		if(is_key_down(KEY_DOWN)) game.down();
 		if(IsKeyPressed(KEY_Z)) game.rotate();
+		if(IsKeyPressed(KEY_C)) game.swap();
 		if(IsKeyPressed(KEY_SPACE)) game.drop();
 
 		BeginDrawing();

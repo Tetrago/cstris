@@ -35,6 +35,11 @@ void Game::drop() noexcept
 	mDropper.drop();
 }
 
+void Game::swap() noexcept
+{
+	mDropper.swap();
+}
+
 void Game::draw(int x, int y, int ppu) const noexcept
 {
 	mBoard.draw(x, y, ppu);

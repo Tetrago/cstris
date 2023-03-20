@@ -15,6 +15,7 @@ bool Dropper::step() noexcept
 	if(!mBoard->intersects(mPiece, mX, mY) && mY + mBounds.maxY < mBoard->height()) return false;
 	
 	mBoard->overlay(mPiece, mX, mY - 1);
+	mLocked = false;
 	next();
 	return true;
 }
@@ -48,6 +49,16 @@ void Dropper::rotate() noexcept
 	update();
 }
 
+void Dropper::swap() noexcept
+{
+	if(mLocked) return;
+	mLocked = true;
+
+	Tetrimino tmp = mCurrent;
+	piece(mHeld != Tetrimino::None ? mHeld : getTetriminoFromBag());
+	mHeld = tmp;
+}
+
 void Dropper::update() noexcept
 {
 	mX = std::clamp(mX, mBounds.minX, mBoard->width() - mBounds.maxX - 1);
@@ -65,7 +76,13 @@ void Dropper::update() noexcept
 
 void Dropper::next() noexcept
 {
-	mPiece = get_tetrimino(getTetriminoFromBag());
+	piece(getTetriminoFromBag());
+}
+
+void Dropper::piece(Tetrimino tetrimino) noexcept
+{
+	mCurrent = tetrimino;
+	mPiece = get_tetrimino(tetrimino);
 	mBounds = mPiece.bounds();
 	mX = mBoard->width() / 2 - mPiece.width() / 2;
 	mY = 0;

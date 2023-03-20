@@ -14,6 +14,7 @@ public:
 	void rotate() noexcept;
 	void down() noexcept;
 	void drop() noexcept;
+	void swap() noexcept;
 	void draw(int x, int y, int ppu = 30) const noexcept;
 
 	const Board& board() const noexcept { return mBoard; }
