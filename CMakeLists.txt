@@ -3,17 +3,19 @@ project(cstris)
 
 find_package(raylib CONFIG REQUIRED)
 
-add_executable(cstris
-    "src/board.cpp"
-    "src/board.hpp"
-    "src/dropper.cpp"
-    "src/dropper.hpp"
-    "src/game.cpp"
-    "src/game.hpp"
-    "src/main.cpp"
-    "src/tetrimino.cpp"
-    "src/tetrimino.hpp")
+add_library(cstris STATIC
+    "libs/cstris/board.cpp"
+    "libs/cstris/board.hpp"
+    "libs/cstris/dropper.cpp"
+    "libs/cstris/dropper.hpp"
+    "libs/cstris/game.cpp"
+    "libs/cstris/game.hpp"
+    "libs/cstris/tetrimino.cpp"
+    "libs/cstris/tetrimino.hpp")
 
-target_compile_features(cstris PRIVATE cxx_std_17)
+target_compile_features(cstris PUBLIC cxx_std_17)
+target_include_directories(cstris PUBLIC "libs/cstris")
 
-target_link_libraries(cstris PRIVATE raylib)
+add_executable(rlib "extras/rlib/main.cpp")
+
+target_link_libraries(rlib PRIVATE cstris raylib)

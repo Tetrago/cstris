@@ -1,6 +1,33 @@
 #include <raylib.h>
 
-#include "game.hpp"
+#include <game.hpp>
+
+Color get_tetrimino_color(Tetrimino tetrimino) noexcept
+{
+	switch(tetrimino)
+	{
+	default:
+	case Tetrimino::None: return Color{ 0, 0, 0, 255 };
+	case Tetrimino::I: return Color{ 0, 255, 255, 255 };
+	case Tetrimino::O: return Color{ 255, 255, 0, 255 };
+	case Tetrimino::T: return Color{ 255, 0, 255, 255 };
+	case Tetrimino::J: return Color{ 0, 0, 255, 255 };
+	case Tetrimino::L: return Color{ 255, 129, 0, 255 };
+	case Tetrimino::S: return Color{ 0, 255, 0, 255 };
+	case Tetrimino::Z: return Color{ 255, 0, 0, 255 };
+	}
+}
+
+void cstris_draw_block(int x, int y, int size, Tetrimino tetrimino, bool ghost)
+{
+	Color color = get_tetrimino_color(tetrimino);
+	if(ghost)
+	{
+		color.a = 129;
+	}
+
+	DrawRectangle(x, y, size, size, color);
+}
 
 int gFrameCount = 0;
 int gLastKey = -1;

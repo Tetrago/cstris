@@ -12,7 +12,7 @@ Dropper::Dropper(Board* board) noexcept
 bool Dropper::step() noexcept
 {
 	++mY;
-	if(!mBoard->intersects(mPiece, mX, mY) && mY + mBounds.w < mBoard->height()) return false;
+	if(!mBoard->intersects(mPiece, mX, mY) && mY + mBounds.maxY < mBoard->height()) return false;
 	
 	mBoard->overlay(mPiece, mX, mY - 1);
 	next();
@@ -50,13 +50,13 @@ void Dropper::rotate() noexcept
 
 void Dropper::update() noexcept
 {
-	mX = std::clamp(mX, -static_cast<int>(mBounds.x), mBoard->width() - static_cast<int>(mBounds.z) - 1);
+	mX = std::clamp(mX, mBounds.minX, mBoard->width() - mBounds.maxX - 1);
 
 	mLowestY = mY;
 	while(1)
 	{
 		++mLowestY;
-		if(!mBoard->intersects(mPiece, mX, mLowestY) && mLowestY + mBounds.w < mBoard->height()) continue;
+		if(!mBoard->intersects(mPiece, mX, mLowestY) && mLowestY + mBounds.maxY < mBoard->height()) continue;
 	
 		--mLowestY;
 		break;

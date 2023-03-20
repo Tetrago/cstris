@@ -1,8 +1,16 @@
 #pragma once
 
-#include <raylib.h>
-
 #include "tetrimino.hpp"
+
+struct Bounds
+{
+	int minX;
+	int minY;
+	int maxX;
+	int maxY;
+};
+
+extern void cstris_draw_block(int x, int y, int size, Tetrimino tetrimino, bool ghost);
 
 class Board
 {
@@ -21,13 +29,11 @@ public:
 	void draw(int x, int y, int ppu, bool ghost = false) const noexcept;
 	bool intersects(const Board& board, int x, int y) const noexcept;
 	void overlay(const Board& board, int x, int y) noexcept;
-	Vector4 bounds() const noexcept;
+	Bounds bounds() const noexcept;
 
 	int width() const { return mWidth; }
 	int height() const { return mHeight; }
 private:
-	void drawTetrimino(int x, int y, int ppu, Tetrimino tetrimino, bool ghost) const noexcept;
-
 	int mWidth;
 	int mHeight;
 	Tetrimino* mTetriminoes;

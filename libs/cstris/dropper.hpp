@@ -22,7 +22,7 @@ private:
 
 	Board* const mBoard;
 	Board mPiece;
-	Vector4 mBounds;
+	Bounds mBounds;
 	int mX;
 	int mY;
 	int mLowestY;

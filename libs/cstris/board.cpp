@@ -88,9 +88,12 @@ void Board::draw(int x, int y, int ppu, bool ghost) const noexcept
 {
 	for(int dx = 0; dx < mWidth; ++dx)
 	{
-		for(int dy = 0; dy < mHeight; ++dy)
+		for(int dy = mHeight - 1; dy >= 0; --dy)
 		{
-			drawTetrimino(x + dx * ppu, y + (mHeight - dy - 1) * ppu, ppu, mTetriminoes[(mHeight - dy - 1) * mWidth + dx], ghost);
+			Tetrimino tetrimino = mTetriminoes[dy * mWidth + dx];
+			if(tetrimino == Tetrimino::None) continue;
+
+			cstris_draw_block(x + dx * ppu, y + dy * ppu, ppu, tetrimino, ghost);
 		}
 	}
 }
@@ -136,9 +139,9 @@ void Board::overlay(const Board& board, int x, int y) noexcept
 	}
 }
 
-Vector4 Board::bounds() const noexcept
+Bounds Board::bounds() const noexcept
 {
-	Vector4 bounds = { mWidth, mHeight, 0, 0 };
+	Bounds bounds = { mWidth, mHeight, 0, 0 };
 
 	for(int x = 0; x < mWidth; ++x)
 	{
@@ -146,25 +149,12 @@ Vector4 Board::bounds() const noexcept
 		{
 			if(mTetriminoes[y * mWidth + x] == Tetrimino::None) continue;
 
-			bounds.x = std::min(static_cast<float>(x), bounds.x);
-			bounds.y = std::min(static_cast<float>(y), bounds.y);
-			bounds.z = std::max(static_cast<float>(x), bounds.z);
-			bounds.w = std::max(static_cast<float>(y), bounds.w);
+			bounds.minX = std::min(x, bounds.minX);
+			bounds.minY = std::min(y, bounds.minY);
+			bounds.maxX = std::max(x, bounds.maxX);
+			bounds.maxY = std::max(y, bounds.maxY);
 		}
 	}
 
 	return bounds;
-}
-
-void Board::drawTetrimino(int x, int y, int ppu, Tetrimino tetrimino, bool ghost) const noexcept
-{
-	if(tetrimino == Tetrimino::None) return;
-
-	Color color = get_tetrimino_color(tetrimino);
-	if(ghost)
-	{
-		color.a = 129;
-	}
-
-	DrawRectangle(x, y, ppu, ppu, color);
 }

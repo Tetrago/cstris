@@ -1,7 +1,5 @@
 #pragma once
 
-#include <raylib.h>
-
 class Board;
 
 enum class Tetrimino
@@ -23,8 +21,6 @@ enum class Rotation
 	Half,
 	Counterclockwise
 };
-
-Color get_tetrimino_color(Tetrimino tetrimino) noexcept;
 
 Rotation rotate_clockwise(Rotation rotation) noexcept;
 Rotation rotate_counterclockwiise(Rotation rotation) noexcept;

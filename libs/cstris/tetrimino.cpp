@@ -81,22 +81,6 @@ namespace
 	};
 }
 
-Color get_tetrimino_color(Tetrimino tetrimino) noexcept
-{
-	switch(tetrimino)
-	{
-	default:
-	case Tetrimino::None: return Color{ 0, 0, 0, 255 };
-	case Tetrimino::I: return Color{ 0, 255, 255, 255 };
-	case Tetrimino::O: return Color{ 255, 255, 0, 255 };
-	case Tetrimino::T: return Color{ 255, 0, 255, 255 };
-	case Tetrimino::J: return Color{ 0, 0, 255, 255 };
-	case Tetrimino::L: return Color{ 255, 129, 0, 255 };
-	case Tetrimino::S: return Color{ 0, 255, 0, 255 };
-	case Tetrimino::Z: return Color{ 255, 0, 0, 255 };
-	}
-}
-
 Rotation rotate_clockwise(Rotation rotation) noexcept
 {
 	switch(rotation)
