@@ -7,7 +7,8 @@
 class Board
 {
 public:
-	Board(int width = 10, int height = 20) noexcept;
+	Board() noexcept;
+	Board(int width, int height) noexcept;
 	~Board() noexcept;
 
 	Board(const Board& other) noexcept;
@@ -17,7 +18,7 @@ public:
 
 	void set(int x, int y, Tetrimino tetrimino) noexcept;
 	Board rotate(Rotation rotation) const noexcept;
-	void draw(int x, int y, bool ghost = false, int ppu = 30) const noexcept;
+	void draw(int x, int y, int ppu, bool ghost = false) const noexcept;
 	bool intersects(const Board& board, int x, int y) const noexcept;
 	void overlay(const Board& board, int x, int y) noexcept;
 	Vector4 bounds() const noexcept;

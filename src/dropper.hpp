@@ -12,7 +12,7 @@ public:
 
 	bool step() noexcept;
 	void drop() noexcept;
-	void draw(int ppu = 30) const noexcept;
+	void draw(int x, int y, int ppu) const noexcept;
 	void shift(int d) noexcept;
 	void rotate() noexcept;
 private:
@@ -22,7 +22,6 @@ private:
 
 	Board* const mBoard;
 	Board mPiece;
-	Board mGhost;
 	Vector4 mBounds;
 	int mX;
 	int mY;

@@ -24,21 +24,26 @@ void Dropper::drop() noexcept
 	while(!step());
 }
 
-void Dropper::draw(int ppu) const noexcept
+void Dropper::draw(int x, int y, int ppu) const noexcept
 {
-	mPiece.draw(mX * ppu, mY * ppu, false, ppu);
-	mGhost.draw(mX * ppu, mLowestY * ppu, true, ppu);
+	mPiece.draw(x + mX * ppu, y + mY * ppu, ppu);
+	mPiece.draw(x + mX * ppu, y + mLowestY * ppu, ppu, true);
 }
 
 void Dropper::shift(int d) noexcept
 {
+	if(mBoard->intersects(mPiece, mX + d, mY)) return;
+
 	mX += d;
 	update();
 }
 
 void Dropper::rotate() noexcept
 {
-	mPiece = mPiece.rotate(Rotation::Clockwise);
+	Board piece = mPiece.rotate(Rotation::Clockwise);
+	if(mBoard->intersects(piece, mX, mY)) return;
+
+	mPiece = piece;
 	mBounds = mPiece.bounds();
 	update();
 }
@@ -47,14 +52,11 @@ void Dropper::update() noexcept
 {
 	mX = std::clamp(mX, -static_cast<int>(mBounds.x), mBoard->width() - static_cast<int>(mBounds.z) - 1);
 
-	mGhost = mPiece;
 	mLowestY = mY;
-	Vector4 bounds = mGhost.bounds();
-	
 	while(1)
 	{
 		++mLowestY;
-		if(!mBoard->intersects(mGhost, mX, mLowestY) && mLowestY + bounds.w < mBoard->height()) continue;
+		if(!mBoard->intersects(mPiece, mX, mLowestY) && mLowestY + mBounds.w < mBoard->height()) continue;
 	
 		--mLowestY;
 		break;

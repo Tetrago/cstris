@@ -4,6 +4,12 @@
 #include <cassert>
 #include <algorithm>
 
+Board::Board() noexcept
+	: mWidth(0)
+	, mHeight(0)
+	, mTetriminoes(nullptr)
+{}
+
 Board::Board(int width, int height) noexcept
 	: mWidth(width)
 	, mHeight(height)
@@ -78,7 +84,7 @@ Board Board::rotate(Rotation rotation) const noexcept
 	return board.rotate(static_cast<Rotation>(static_cast<int>(rotation) - 1));
 }
 
-void Board::draw(int x, int y, bool ghost, int ppu) const noexcept
+void Board::draw(int x, int y, int ppu, bool ghost) const noexcept
 {
 	for(int dx = 0; dx < mWidth; ++dx)
 	{

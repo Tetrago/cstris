@@ -8,6 +8,8 @@ add_executable(cstris
     "src/board.hpp"
     "src/dropper.cpp"
     "src/dropper.hpp"
+    "src/game.cpp"
+    "src/game.hpp"
     "src/main.cpp"
     "src/tetrimino.cpp"
     "src/tetrimino.hpp")
