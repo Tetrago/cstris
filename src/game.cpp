@@ -25,6 +25,11 @@ void Game::rotate() noexcept
 	mDropper.rotate();
 }
 
+void Game::down() noexcept
+{
+	mDropper.step();
+}
+
 void Game::drop() noexcept
 {
 	mDropper.drop();

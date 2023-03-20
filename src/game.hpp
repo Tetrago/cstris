@@ -12,6 +12,7 @@ public:
 	void left() noexcept;
 	void right() noexcept;
 	void rotate() noexcept;
+	void down() noexcept;
 	void drop() noexcept;
 	void draw(int x, int y, int ppu = 30) const noexcept;
 
