@@ -15,6 +15,7 @@ bool Dropper::step() noexcept
 	if(!mBoard->intersects(mPiece, mX, mY) && mY + mBounds.maxY < mBoard->height()) return false;
 	
 	mBoard->overlay(mPiece, mX, mY - 1);
+	mBoard->consolidate();
 	mLocked = false;
 	next();
 	return true;

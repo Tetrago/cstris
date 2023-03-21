@@ -55,37 +55,28 @@ void draw_grid(int x, int y, int width, int height, int ppu)
 }
 
 int gFrameCount = 0;
-int gLastKey = -1;
-int gInputOffset;
+bool gKeyPressed;
+int gInputOffset = -1;
 
 bool is_key_down(int key) noexcept
 {
-	if(gLastKey != key)
-	{
-		if(!IsKeyDown(key)) return false;
+	if(!IsKeyDown(key)) return false;
+	gKeyPressed = true;
 
-		gLastKey = key;
-		gInputOffset = gFrameCount % 3;
-
-		return true;
-	}
-	else
-	{
-		if(!IsKeyDown(key))
-		{
-			gLastKey = -1;
-			return false;
-		}
-
-		return (gFrameCount + gInputOffset) % 3 == 0;
-	}
+	if(gInputOffset == -1)
+		gInputOffset = gFrameCount % 4;
+		
+	return (gFrameCount - gInputOffset) % 4 == 0;
 }
 
 int main()
 {
 	Game game;
 
-	InitWindow(game.board().width() * PIXELS_PER_UNIT + 4 * 2 * PIXELS_PER_UNIT + BORDER_SIZE * 2, game.board().height() * PIXELS_PER_UNIT + BORDER_SIZE * 2, "Cstris");
+	const int width = game.board().width() * PIXELS_PER_UNIT + 4 * 2 * PIXELS_PER_UNIT + BORDER_SIZE * 2;
+	const int height = game.board().height() * PIXELS_PER_UNIT + BORDER_SIZE * 2;
+
+	InitWindow(width, height, "Cstris");
 	SetTargetFPS(60);
 
 	while(!WindowShouldClose())
@@ -96,6 +87,8 @@ int main()
 			gFrameCount = 0;
 		}
 
+		gKeyPressed = false;
+
 		if(is_key_down(KEY_LEFT)) game.left();
 		if(is_key_down(KEY_RIGHT)) game.right();
 		if(is_key_down(KEY_DOWN)) game.down();
@@ -103,19 +96,25 @@ int main()
 		if(IsKeyPressed(KEY_C)) game.swap();
 		if(IsKeyPressed(KEY_SPACE)) game.drop();
 
+		if(!gKeyPressed)
+			gInputOffset = -1;
+
 		BeginDrawing();
 
-		ClearBackground({ 0, 0, 0, 255 });
+		DrawRectangleGradientV(0, 0, width, height, { 0, 0, 0, 255, }, { 20, 20, 20, 255 });
 
+		DrawRectangle(BORDER_SIZE, BORDER_SIZE, 4 * PIXELS_PER_UNIT, 4 * PIXELS_PER_UNIT, { 0, 0, 0, 255 });
 		DrawRectangleLines(BORDER_SIZE, BORDER_SIZE, 4 * PIXELS_PER_UNIT, 4 * PIXELS_PER_UNIT, BORDER_COLOR);
 		draw_ui_tetrimino(game.dropper().held(), BORDER_SIZE, BORDER_SIZE);
 
+		DrawRectangle(BORDER_SIZE + (4 + game.board().width()) * PIXELS_PER_UNIT, BORDER_SIZE + 0, 4 * PIXELS_PER_UNIT, 4 * QUEUE_LENGTH * PIXELS_PER_UNIT, { 0, 0, 0, 255 });
 		DrawRectangleLines(BORDER_SIZE + (4 + game.board().width()) * PIXELS_PER_UNIT, BORDER_SIZE + 0, 4 * PIXELS_PER_UNIT, 4 * QUEUE_LENGTH * PIXELS_PER_UNIT, BORDER_COLOR);
 		for(int i = 0; i < QUEUE_LENGTH; ++i)
 		{
 			draw_ui_tetrimino(game.dropper().bag()[game.dropper().bag().size() - i - 1], BORDER_SIZE + (4 + game.board().width()) * PIXELS_PER_UNIT, BORDER_SIZE + i * 4 * PIXELS_PER_UNIT);
 		}
 
+		DrawRectangle(BORDER_SIZE + 4 * PIXELS_PER_UNIT, BORDER_SIZE, game.board().width() * PIXELS_PER_UNIT, game.board().height() * PIXELS_PER_UNIT, { 0, 0, 0, 255 });
 		DrawRectangleLines(BORDER_SIZE + 4 * PIXELS_PER_UNIT, BORDER_SIZE, game.board().width() * PIXELS_PER_UNIT, game.board().height() * PIXELS_PER_UNIT, BORDER_COLOR);
 		draw_grid(BORDER_SIZE + 4 * PIXELS_PER_UNIT, BORDER_SIZE, game.board().width(), game.board().height(), PIXELS_PER_UNIT);
 		game.draw(BORDER_SIZE + 4 * PIXELS_PER_UNIT, BORDER_SIZE);

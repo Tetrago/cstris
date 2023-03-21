@@ -158,3 +158,31 @@ Bounds Board::bounds() const noexcept
 
 	return bounds;
 }
+
+int Board::consolidate() noexcept
+{
+	int count = 0;
+
+	for(int y = mHeight - 1; y >= 0; --y)
+	{
+		for(int x = 0; x < mWidth; ++x)
+		{
+			if(mTetriminoes[y * mWidth + x] == Tetrimino::None) goto skip;
+		}
+
+		for(int dy = y - 1; dy > 0; --dy)
+		{
+			for(int x = 0; x < mWidth; ++x)
+			{
+				mTetriminoes[(dy + 1) * mWidth + x] = mTetriminoes[dy * mWidth + x];
+			}
+		}
+
+		++count;
+		++y;
+
+	skip:;
+	}
+
+	return count;
+}

@@ -30,6 +30,7 @@ public:
 	bool intersects(const Board& board, int x, int y) const noexcept;
 	void overlay(const Board& board, int x, int y) noexcept;
 	Bounds bounds() const noexcept;
+	int consolidate() noexcept;
 
 	int width() const { return mWidth; }
 	int height() const { return mHeight; }
