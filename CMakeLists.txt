@@ -16,6 +16,13 @@ add_library(cstris STATIC
 target_compile_features(cstris PUBLIC cxx_std_17)
 target_include_directories(cstris PUBLIC "libs/cstris")
 
+add_library(cythe STATIC
+    "libs/cythe/cythe.hpp"
+    "libs/cythe/cythe.cpp")
+
+target_compile_features(cythe PUBLIC cxx_std_17)
+target_include_directories(cythe PUBLIC "libs/cythe")
+
 add_executable(rlib "extras/rlib/main.cpp")
 
 target_link_libraries(rlib PRIVATE cstris raylib)
