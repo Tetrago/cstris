@@ -61,7 +61,7 @@ void Dropper::swap() noexcept
 
 void Dropper::update() noexcept
 {
-	mX = std::clamp(mX, mBounds.minX, mBoard->width() - mBounds.maxX - 1);
+	mX = std::clamp(mX, -mBounds.minX, mBoard->width() - mBounds.maxX - 1);
 
 	mLowestY = mY;
 	while(1)
